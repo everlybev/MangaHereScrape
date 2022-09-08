@@ -17,6 +17,29 @@ def better_sleep(time2wait):
     start = time.time()
     while((time.time()-start)<time2wait-.005):
         time.sleep(1)
+
+def getStatus(string):
+    configurationFile = open(TheConfigurationFile, 'r')
+    config = str(configurationFile.read())
+    configurationFile.close()
+    status = config.split('#########################################################################')[1]
+    status = status.split('#########################################################################')[0]
+    #print(status)
+    string = str(string)
+    status = str(status.split(string)[1])
+    #at this point if particular_site_status is MStatus int stus will not contain a :
+    try:
+        returnStatus = status.split('Status')[0].strip()
+    except:
+        pass
+    if status.__contains__('\n'):
+        returnStatus = status.split('\n')[0].strip()
+    if status.__contains__(' '):
+        returnStatus = status.split(' ')[0].strip()
+    if status.__contains__('Status'):
+        returnStatus = status.split('Status')[0].strip()
+        print(returnStatus)
+    return returnStatus
     
 #Get email and password
 def login_info():
@@ -212,10 +235,8 @@ def mangaHere(counter, parray):
             # There were two tabs (shared and serial) and only the first was checked
             try:
                 s.append(BeautifulSoup(response.text, "lxml").body.find(id='chapterlist').getText())
-                print(BeautifulSoup(response.text, "lxml").body.find(id='chapterlist').getText())
             except:
                 s.append(BeautifulSoup(response.text, "lxml").body.find(id='chapterlist'))
-                print('b')
             print('s['+str(site)+'] had no issues')
             if s[site] == p[site]:
                 p[site] = s[site]
@@ -257,7 +278,7 @@ def mangaHere(counter, parray):
             dt_string = now.strftime("%m/%d/%Y %I:%M:%S %p")
             logger.write('\n')
             logger.write(dt_string + '\n')
-            logger.write('No chapters\n')
+            logger.write('No new chapters\n')
             logger.close()
     else:
         logger = open('MangaHere.txt', 'a')
@@ -293,14 +314,17 @@ def main():
         #now the set up is done do the check for real
         if count > 0:
             now = datetime.now()
-            today = now.strftime("%I") #check once each hour
+            today = now.strftime("%S") #check once each hour
             if today == past:
                 past = today
             else:
                 try:
-                    past_soup = mangaHere(count, past_soup)
-                except:
-                    msg = 'There was a main() error. Maybe check mangahere'
+                    if (getStatus('StatusMH: ') == 'Go') or (getStatus('StatusMH: ') == 'GO') or (getStatus('StatusMH: ') == 'go'):
+                        past_soup = mangaHere(count, past_soup)
+                except Exception as errrrrrrrr:
+                    error = str(errrrrrrrr)
+                    print(errrrrrrrr)
+                    msg = error + '\n' + 'There was a main() error. Maybe check mangahere'
                     email(msg)
                     logger = open('MangaHere.txt', 'a')
                     now = datetime.now()
@@ -311,7 +335,7 @@ def main():
                     logger.close()
                 past = today
                 daycount = daycount + 1
-        better_sleep(secrets.randbelow(69))
+        better_sleep(secrets.randbelow(9))
         #Get log file size in bytes
         MangaHere_text_file_size = os.path.getsize('MangaHere.txt')
         if MangaHere_text_file_size > 44444:
