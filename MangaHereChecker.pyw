@@ -314,7 +314,7 @@ def main():
         #now the set up is done do the check for real
         if count > 0:
             now = datetime.now()
-            today = now.strftime("%S") #check once each hour
+            today = now.strftime("%I") #check once each hour
             if today == past:
                 past = today
             else:
