@@ -38,7 +38,7 @@ def getStatus(string):
         returnStatus = status.split(' ')[0].strip()
     if status.__contains__('Status'):
         returnStatus = status.split('Status')[0].strip()
-        print(returnStatus)
+    #print(returnStatus)
     return returnStatus
     
 #Get email and password
@@ -335,10 +335,10 @@ def main():
                     logger.close()
                 past = today
                 daycount = daycount + 1
-        better_sleep(secrets.randbelow(9))
+        better_sleep(secrets.randbelow(69))
         #Get log file size in bytes
         MangaHere_text_file_size = os.path.getsize('MangaHere.txt')
-        if MangaHere_text_file_size > 44444:
+        if MangaHere_text_file_size > 43210:
             # clear out the log file if it gets too big (1MB)
             logger_lines = []
             logger = open('MangaHere.txt', 'r')
