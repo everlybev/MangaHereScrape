@@ -202,7 +202,6 @@ def mangaHere(counter, parray):
         try:
             if url[site] != '0':
                 response = requests.get(url[site])#, headers=headers)
-            
         except:
             better_sleep(6)
             site = "Fucked"
@@ -211,7 +210,12 @@ def mangaHere(counter, parray):
             # parse the downloaded page
             # Checks whole main instead of tab
             # There were two tabs (shared and serial) and only the first was checked
-            s.append(BeautifulSoup(response.text, "lxml").body.find(id='wrapper').find(id='content').main.text)
+            try:
+                s.append(BeautifulSoup(response.text, "lxml").body.find(id='chapterlist').getText())
+                print(BeautifulSoup(response.text, "lxml").body.find(id='chapterlist').getText())
+            except:
+                s.append(BeautifulSoup(response.text, "lxml").body.find(id='chapterlist'))
+                print('b')
             print('s['+str(site)+'] had no issues')
             if s[site] == p[site]:
                 p[site] = s[site]
@@ -224,13 +228,14 @@ def mangaHere(counter, parray):
                     truncurl.append('0')
                     msg = (msg +'\n'+truncurl[site])
     print('finished for site in range(0, len(url), 1)')
+    #sendEmail = 1
     if site != "Fucked":
         logger = open('MangaHere.txt', 'a')
         now = datetime.now()
         dt_string = now.strftime("%m/%d/%Y %I:%M:%S %p")
         logger.write('\n')
         logger.write(dt_string + '\n')
-        logger.write(str('serebii got response'))
+        logger.write(str('MangaHere got response'))
         logger.close()
     if counter > 0:
         if sendEmail == 1:
@@ -240,7 +245,11 @@ def mangaHere(counter, parray):
             dt_string = now.strftime("%m/%d/%Y %I:%M:%S %p")
             logger.write('\n')
             logger.write(dt_string + '\n')
-            logger.write('New Mystery Gift!\n')
+            try:
+                logger.write(str(msg) + '\n')
+            except:
+                pass
+            logger.write('New chapter!\n')
             logger.close()
         else:
             logger = open('MangaHere.txt', 'a')
@@ -248,7 +257,7 @@ def mangaHere(counter, parray):
             dt_string = now.strftime("%m/%d/%Y %I:%M:%S %p")
             logger.write('\n')
             logger.write(dt_string + '\n')
-            logger.write('No New Mystery Gifts\n')
+            logger.write('No chapters\n')
             logger.close()
     else:
         logger = open('MangaHere.txt', 'a')
