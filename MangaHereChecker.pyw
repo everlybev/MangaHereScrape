@@ -234,10 +234,24 @@ def mangaHere(counter, parray):
             # Checks whole main instead of tab
             # There were two tabs (shared and serial) and only the first was checked
             try:
+                data = BeautifulSoup(response.text, "lxml").body.find(id='chapterlist').getText()
                 s.append(BeautifulSoup(response.text, "lxml").body.find(id='chapterlist').getText())
             except:
+                data = BeautifulSoup(response.text, "lxml").body.find(id='chapterlist')
                 s.append(BeautifulSoup(response.text, "lxml").body.find(id='chapterlist'))
             print('s['+str(site)+'] had no issues')
+            if ((data == None) or (str(data) == 'None')):
+                print(str(url[site])+' is None')
+                logger = open('MangaHere.txt', 'a')
+                now = datetime.now()
+                dt_string = now.strftime("%m/%d/%Y %I:%M:%S %p")
+                logger.write('\n')
+                logger.write(dt_string + '\n')
+                try:
+                    logger.write(str(url[site])+' is None' + '\n')
+                except:
+                    pass
+                logger.close()
             if s[site] == p[site]:
                 p[site] = s[site]
             else:
