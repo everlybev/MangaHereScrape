@@ -162,7 +162,7 @@ def mangaHere(counter, parray):
     while notDone > 0:
         bad = 0
         for line in range(0, len(raw)-x, 1):
-            if str(raw[line]).__contains__('https') and str(raw[line]).__contains__('mangahere'):
+            if str(raw[line]).__contains__('https') and str(raw[line]).__contains__('mangahere') and not str(raw[line]).__contains__('/search?'):
                 raw[line] = str(raw[line]).strip()
             else:
                 try:
