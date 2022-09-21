@@ -18,6 +18,84 @@ def better_sleep(time2wait):
     while((time.time()-start)<time2wait-.005):
         time.sleep(1)
 
+def remove_hours_ago(string):
+    test = '1 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '2 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '3 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '4 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '5 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '6 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '7 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '8 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '9 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '10 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '11 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '12 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '13 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '14 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '15 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '16 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '17 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '18 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '19 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '20 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '21 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '22 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '23 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '24 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    test = '0 hour ago'
+    if(string.__contains__(test)):
+        string = string.replace(test, 'today')
+    return string
+
 def getStatus(string):
     configurationFile = open(TheConfigurationFile, 'r')
     config = str(configurationFile.read())
@@ -233,12 +311,14 @@ def mangaHere(counter, parray):
             # parse the downloaded page
             # Checks whole main instead of tab
             # There were two tabs (shared and serial) and only the first was checked
+            data = ''
             try:
                 data = BeautifulSoup(response.text, "lxml").body.find(id='chapterlist').getText()
-                s.append(BeautifulSoup(response.text, "lxml").body.find(id='chapterlist').getText())
             except:
                 data = BeautifulSoup(response.text, "lxml").body.find(id='chapterlist')
-                s.append(BeautifulSoup(response.text, "lxml").body.find(id='chapterlist'))
+            data = str(data)
+            data = remove_hours_ago(data)
+            s.append(data)
             print('s['+str(site)+'] had no issues')
             if ((data == None) or (str(data) == 'None')):
                 print(str(url[site])+' is None')
@@ -252,6 +332,8 @@ def mangaHere(counter, parray):
                 except:
                     pass
                 logger.close()
+            print(p[site])
+            print(s[site])
             if s[site] == p[site]:
                 p[site] = s[site]
             else:
@@ -328,7 +410,7 @@ def main():
         #now the set up is done do the check for real
         if count > 0:
             now = datetime.now()
-            today = now.strftime("%I") #check once each hour
+            today = now.strftime("%S") #check once each hour
             if today == past:
                 past = today
             else:
