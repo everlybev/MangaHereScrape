@@ -19,81 +19,82 @@ def better_sleep(time2wait):
         time.sleep(1)
 
 def remove_hours_ago(string):
+    replacement = ''
     test = '1 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '2 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '3 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '4 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '5 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '6 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '7 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '8 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '9 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '10 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '11 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '12 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '13 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '14 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '15 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '16 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '17 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '18 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '19 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '20 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '21 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '22 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '23 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '24 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     test = '0 hour ago'
     if(string.__contains__(test)):
-        string = string.replace(test, 'today')
+        string = string.replace(test, replacement)
     return string
 
 def getStatus(string):
@@ -313,13 +314,20 @@ def mangaHere(counter, parray):
             # There were two tabs (shared and serial) and only the first was checked
             data = ''
             try:
-                data = BeautifulSoup(response.text, "lxml").body.find(id='chapterlist').getText()
+                data = BeautifulSoup(response.text, "lxml").body.find(id='chapterlist')
+                data = data.find(class_='title3').getText()
             except:
                 data = BeautifulSoup(response.text, "lxml").body.find(id='chapterlist')
+                data = data.find(class_='title3')
             data = str(data)
             data = remove_hours_ago(data)
+            try:
+                cuurent_chapter = str(int(data.split('Ch.')[1]))
+            except:
+                cuurent_chapter = 'unknown'
+            #print(cuurent_chapter)
             s.append(data)
-            print('s['+str(site)+'] had no issues')
+            #print('s['+str(site)+'] had no issues')
             if ((data == None) or (str(data) == 'None')):
                 print(str(url[site])+' is None')
                 logger = open('MangaHere.txt', 'a')
@@ -332,8 +340,8 @@ def mangaHere(counter, parray):
                 except:
                     pass
                 logger.close()
-            print(p[site])
-            print(s[site])
+            #print(p[site])
+            #print(s[site])
             if s[site] == p[site]:
                 p[site] = s[site]
             else:
@@ -366,7 +374,10 @@ def mangaHere(counter, parray):
                 logger.write(str(msg) + '\n')
             except:
                 pass
-            logger.write('New chapter!\n')
+            try:
+                logger.write('New chapter!\n' + cuurent_chapter + '\n')
+            except:
+                logger.write('New chapter!\n')
             logger.close()
         else:
             logger = open('MangaHere.txt', 'a')
@@ -410,7 +421,7 @@ def main():
         #now the set up is done do the check for real
         if count > 0:
             now = datetime.now()
-            today = now.strftime("%S") #check once each hour
+            today = now.strftime("%I") #check once each hour
             if today == past:
                 past = today
             else:
