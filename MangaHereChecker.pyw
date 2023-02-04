@@ -334,6 +334,15 @@ def mangaHere(counter, parray):
         try:
             if url[site] != '0':
                 response = requests.get(url[site])#, headers=headers)
+                if response == None:
+                    logger = open('MangaHere.txt', 'a')
+                    now = datetime.now()
+                    dt_string = now.strftime("%m/%d/%Y %I:%M:%S %p")
+                    logger.write('\n')
+                    logger.write(dt_string + '\n')
+                    logger.write('{} seems to be down.'format(url[site]))
+                    logger.close()
+                    
         except:
             better_sleep(6)
             site = "Fucked"
@@ -347,8 +356,11 @@ def mangaHere(counter, parray):
                 data = BeautifulSoup(response.text, "lxml").body.find(id='chapterlist')
                 data = data.find(class_='title3').getText()
             except:
-                data = BeautifulSoup(response.text, "lxml").body.find(id='chapterlist')
-                data = data.find(class_='title3')
+                try:
+                    data = BeautifulSoup(response.text, "lxml").body.find(id='chapterlist')
+                    data = data.find(class_='title3')
+                except:
+                    data = '{} seems to be down.'format(url[site])
             data = str(data)
             data = remove_hours_ago(data)
             try:
@@ -358,7 +370,7 @@ def mangaHere(counter, parray):
             #print(cuurent_chapter)
             s.append(data)
             #print('s['+str(site)+'] had no issues')
-            if ((data == None) or (str(data) == 'None')):
+            if ((data == None) or (str(data) == 'None') or (response == None)):
                 print(str(url[site])+' is None')
                 logger = open('MangaHere.txt', 'a')
                 now = datetime.now()
