@@ -673,3 +673,13 @@ Just started.  Not sending email.
 MangaHere got response
 01/12/2023 07:54:20 PM
 No new chapters
+
+02/12/2023 10:17:29 AM
+MangaHere got response
+02/12/2023 10:17:29 AM
+Just started.  Not sending email. 
+
+02/12/2023 10:18:00 AM
+MangaHere got response
+02/12/2023 10:18:00 AM
+Just started.  Not sending email. 

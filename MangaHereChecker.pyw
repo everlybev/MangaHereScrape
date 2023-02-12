@@ -340,7 +340,7 @@ def mangaHere(counter, parray):
                     dt_string = now.strftime("%m/%d/%Y %I:%M:%S %p")
                     logger.write('\n')
                     logger.write(dt_string + '\n')
-                    logger.write('{} seems to be down.'format(url[site]))
+                    logger.write('{} seems to be down'.format(url[site]))
                     logger.close()
                     
         except:
@@ -360,14 +360,14 @@ def mangaHere(counter, parray):
                     data = BeautifulSoup(response.text, "lxml").body.find(id='chapterlist')
                     data = data.find(class_='title3')
                 except:
-                    data = '{} seems to be down.'format(url[site])
+                    data = '{} seems to be down'.format(url[site])
             data = str(data)
             data = remove_hours_ago(data)
             try:
                 cuurent_chapter = str(int(data.split('Ch.')[1]))
             except:
                 cuurent_chapter = 'unknown'
-            #print(cuurent_chapter)
+            print('current ch is '+cuurent_chapter)
             s.append(data)
             #print('s['+str(site)+'] had no issues')
             if ((data == None) or (str(data) == 'None') or (response == None)):
@@ -393,7 +393,7 @@ def mangaHere(counter, parray):
                     msg = (msg +'\n'+truncurl[site])
                 except:
                     truncurl.append('0')
-                    msg = (msg +'\n'+truncurl[site])
+                    msg = (msg +'\n'+truncurl[site] + ' current chapter ' + cuurent_chapter)
     print('finished for site in range(0, len(url), 1)')
     #sendEmail = 1
     if site != "Fucked":
