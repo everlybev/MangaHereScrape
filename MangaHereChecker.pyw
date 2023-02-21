@@ -390,7 +390,7 @@ def mangaHere(counter, parray):
                 sendEmail = 1
                 p[site] = s[site]
                 try:
-                    msg = (msg +'\n'+truncurl[site])
+                    msg = (msg +'\n'+truncurl[site] + ' current chapter ' + cuurent_chapter)
                 except:
                     truncurl.append('0')
                     msg = (msg +'\n'+truncurl[site] + ' current chapter ' + cuurent_chapter)
@@ -416,10 +416,10 @@ def mangaHere(counter, parray):
                 logger.write(str(msg) + '\n')
             except:
                 pass
-            try:
-                logger.write('New chapter!\n' + cuurent_chapter + '\n')
-            except:
-                logger.write('New chapter!\n')
+##            try:
+##                logger.write('New chapter!\n' + cuurent_chapter + '\n')
+##            except:
+##                logger.write('New chapter!\n')
             logger.close()
         else:
             logger = open('MangaHere.txt', 'a')
