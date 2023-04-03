@@ -254,6 +254,12 @@ def email(sites):
 ##            logger.write(str('Failed to send email to ' + str(the_emails[i]) + '!'))
 ##            logger.close()
 
+the_file = 'MangaHere.txt'
+def write2file(text, file=the_file, mode='a'):
+    logger = open(file, mode)
+    logger.write(text)
+    logger.write('\n')
+    logger.close()
 
 
 #pokemon checker
@@ -368,6 +374,8 @@ def mangaHere(counter, parray):
             except:
                 cuurent_chapter = 'unknown'
             print('current ch is '+cuurent_chapter)
+            text = '{} current ch is {}'.format(site, cuurent_chapter)
+            write2file(text)
             s.append(data)
             #print('s['+str(site)+'] had no issues')
             if ((data == None) or (str(data) == 'None') or (response == None)):
