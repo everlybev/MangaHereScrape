@@ -374,7 +374,7 @@ def mangaHere(counter, parray):
             except:
                 cuurent_chapter = 'unknown'
             print('current ch is '+cuurent_chapter)
-            text = '{} current ch is {}'.format(site, cuurent_chapter)
+            text = '{} current ch is {}'.format(truncurl[site], cuurent_chapter)
             write2file(text)
             s.append(data)
             #print('s['+str(site)+'] had no issues')
