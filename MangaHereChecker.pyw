@@ -256,6 +256,7 @@ def email(sites):
 
 the_file = 'MangaHere.txt'
 def write2file(text, file=the_file, mode='a'):
+    print(text)
     logger = open(file, mode)
     logger.write(text)
     logger.write('\n')
@@ -346,7 +347,8 @@ def mangaHere(counter, parray):
                     dt_string = now.strftime("%m/%d/%Y %I:%M:%S %p")
                     logger.write('\n')
                     logger.write(dt_string + '\n')
-                    logger.write('{} seems to be down'.format(url[site]))
+                    logger.write('Response is None: {} seems to be down'.format(url[site]))
+                    print('Response is None: {} seems to be down'.format(url[site]))
                     logger.close()
                     
         except:
@@ -358,20 +360,32 @@ def mangaHere(counter, parray):
             # Checks whole main instead of tab
             # There were two tabs (shared and serial) and only the first was checked
             data = ''
-            try:
-                data = BeautifulSoup(response.text, "lxml").body.find(id='chapterlist')
-                data = data.find(class_='title3').getText()
-            except:
+            raw_beauty = BeautifulSoup(response.text, "lxml").body.getText()
+            if raw_beauty.__contains__('Caution to under-aged viewers'):
+                email('{} is adult.  Move to search'.format(url[site]))
+                print('{}: raw --> {}'.format(url[site], raw_beauty))
+                data = raw_beauty
+            else:
                 try:
                     data = BeautifulSoup(response.text, "lxml").body.find(id='chapterlist')
-                    data = data.find(class_='title3')
+                    data = data.find(class_='title3').getText()
                 except:
-                    data = '{} seems to be down'.format(url[site])
+                    try:
+                        data = BeautifulSoup(response.text, "lxml").body.find(id='chapterlist')
+                        data = data.find(class_='title3')
+                    except:
+                        data = '{} seems to be down'.format(url[site])
             data = str(data)
             data = remove_hours_ago(data)
+            print('data after remove hours is {}'.format(data))
             try:
-                cuurent_chapter = str(int(data.split('Ch.')[1]))
-            except:
+                if data == raw_beauty:
+                    cuurent_chapter = 'chapter un scraped'
+                else:
+                    cuurent_chapter = str(int(data.split('Ch.')[1]))
+            except Exception as unknown:
+                text = 'ERROR: {}'.format(unknown)
+                write2file(text)
                 cuurent_chapter = 'unknown'
             print('current ch is '+cuurent_chapter)
             text = '{} current ch is {}'.format(truncurl[site], cuurent_chapter)
@@ -494,7 +508,7 @@ def main():
                     logger.close()
                 past = today
                 daycount = daycount + 1
-        better_sleep(secrets.randbelow(69))
+        time.sleep(secrets.randbelow(69))
         #Get log file size in bytes
         MangaHere_text_file_size = os.path.getsize('MangaHere.txt')
         if MangaHere_text_file_size > 43210:
