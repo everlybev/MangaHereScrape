@@ -511,7 +511,7 @@ def main():
         time.sleep(secrets.randbelow(69))
         #Get log file size in bytes
         MangaHere_text_file_size = os.path.getsize('MangaHere.txt')
-        if MangaHere_text_file_size > 43210:
+        if MangaHere_text_file_size > 63210:
             # clear out the log file if it gets too big (1MB)
             logger_lines = []
             logger = open('MangaHere.txt', 'r')
