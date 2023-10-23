@@ -350,6 +350,8 @@ def mangaHere(counter, parray):
                     logger.write('Response is None: {} seems to be down'.format(url[site]))
                     print('Response is None: {} seems to be down'.format(url[site]))
                     logger.close()
+            else:
+                write2file('MangaHereChecker:\nurl[{}]={}'.format(site, url[site]))
                     
         except:
             better_sleep(6)
@@ -497,7 +499,7 @@ def main():
                 except Exception as errrrrrrrr:
                     error = str(errrrrrrrr)
                     print(errrrrrrrr)
-                    msg = error + '\n' + 'There was a main() error. Maybe check mangahere'
+                    msg = error + '\n' + 'There was a main() error in MangaHereChecker. Maybe check mangahere'
                     email(msg)
                     logger = open('MangaHere.txt', 'a')
                     now = datetime.now()
@@ -508,7 +510,7 @@ def main():
                     logger.close()
                 past = today
                 daycount = daycount + 1
-        time.sleep(secrets.randbelow(69))
+        time.sleep(secrets.randbelow(int(69)))
         #Get log file size in bytes
         MangaHere_text_file_size = os.path.getsize('MangaHere.txt')
         if MangaHere_text_file_size > 63210:
