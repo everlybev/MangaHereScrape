@@ -353,7 +353,7 @@ def mangaHere(counter, parray):
                     
         except:
             better_sleep(6)
-            site = "Fucked"
+            response = None
             print('fucked')
         if site != "Fucked":
             # parse the downloaded page
@@ -375,6 +375,7 @@ def mangaHere(counter, parray):
                         data = data.find(class_='title3')
                     except:
                         data = '{} seems to be down'.format(url[site])
+                        write2file(data + '\nSite Index: ' + site)
             data = str(data)
             data = remove_hours_ago(data)
             print('data after remove hours is {}'.format(data))
