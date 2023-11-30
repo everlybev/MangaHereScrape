@@ -14,9 +14,7 @@ from email.message import EmailMessage
 TheConfigurationFile = 'F:\\Users\\dudeo\\AppData\\Local\\Programs\\Python\\Python39\\dist\\Config.txt'
 
 def better_sleep(time2wait):
-    start = time.time()
-    while((time.time()-start)<time2wait-.005):
-        time.sleep(1)
+    time.sleep(time2wait)
 
 def remove_hours_ago(string):
     replacement = ''
