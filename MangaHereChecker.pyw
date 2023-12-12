@@ -338,7 +338,13 @@ def mangaHere(counter, parray):
         #if computer is sleep wait six seconds then leave loop
         try:
             if url[site] != '0':
-                response = requests.get(url[site])#, headers=headers)
+                try:
+                    response = requests.get(url[site])#, headers=headers)
+                except Exception as err:
+                    write2file(str(err)+'\n'+str(url[site])+'\n'+str(site),
+                               file=the_file,
+                               mode='a')
+                    response = None
                 if response == None:
                     logger = open('MangaHere.txt', 'a')
                     now = datetime.now()
@@ -360,7 +366,10 @@ def mangaHere(counter, parray):
             # Checks whole main instead of tab
             # There were two tabs (shared and serial) and only the first was checked
             data = ''
-            raw_beauty = BeautifulSoup(response.text, "lxml").body.getText()
+            try:
+                raw_beauty = BeautifulSoup(response.text, "lxml").body.getText()
+            except:
+                raw_beauty = 'Something aint right here'
             if raw_beauty.__contains__('Caution to under-aged viewers'):
                 email('{} is adult.  Move to search'.format(url[site]))
                 print('{}: raw --> {}'.format(url[site], raw_beauty))
@@ -407,8 +416,11 @@ def mangaHere(counter, parray):
                 logger.close()
             #print(p[site])
             #print(s[site])
-            if s[site] == p[site]:
+            if (s[site] == p[site]) and not (raw_beauty == 'Something aint right here'):
                 p[site] = s[site]
+            elif raw_beauty == 'Something aint right here':
+                sendEmail = 1
+                msg = msg +'\n'+truncurl[site] + raw_beauty
             else:
                 sendEmail = 1
                 p[site] = s[site]
