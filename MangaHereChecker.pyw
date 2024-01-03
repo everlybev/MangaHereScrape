@@ -384,7 +384,10 @@ def mangaHere(counter, parray):
                         data = data.find(class_='title3')
                     except:
                         data = '{} seems to be down'.format(url[site])
-                        write2file(data + '\nSite Index: ' + site)
+                        try:
+                            write2file(data + '\nSite Index: ' + site)
+                        except:
+                            write2file(data + '\nSite Index: ' + str(site))
             data = str(data)
             data = remove_hours_ago(data)
             print('data after remove hours is {}'.format(data))
